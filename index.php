@@ -64,7 +64,6 @@
 <script>
  $(document).ready(function(){
     $.getJSON('https://pomber.github.io/covid19/timeseries.json', function(data){
-        
         $('button').on('click',function(){
             x = $(this).text()
             $('#p').html('<h2 style="text-align:center;">'+ x + '</h2>');
@@ -78,15 +77,32 @@
         var yData2 = Negara.map(function(e){
             return e.recovered
         })
-        console.log(yData[0])
+        function daily_increase(Data) {
+                var newDaily = []; // INI KUNCI mau BUAT ARRAY DALAM LOOP // Format di atas FOR
+                for (i in Data) {
+                    if (i == 0){
+                        newDaily += Data[0] + ", ";
+                    }
+                    else {
+                        newDaily += Data[i]-Data[i-1] + ", ";
+                    }
+                }
+                return newDaily; // hubungkan dan cetak sumber var newDaily
+         }
+         Ydata = daily_increase(yData)
+         Ydata2 = Ydata.split(", ");
+         rData2 = Ydata2.length;
+         YData2 = Ydata2.slice(0,rData2-1)
+         console.log(YData2)
+         console.log(xLabel)
         const ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: xLabel,
                 datasets: [{
-                    label: 'Seluruh Kasus',
-                    data: yData,
+                    label: ['Kasus Baru'],
+                    data: YData2,
                     backgroundColor: 'rgba(189, 228, 255)',
                     borderColor:'rgb(189, 228, 255)',
                     borderWidth: 4
